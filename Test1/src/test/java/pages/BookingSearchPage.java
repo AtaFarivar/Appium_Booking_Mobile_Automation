@@ -200,7 +200,7 @@ public class BookingSearchPage {
         }
 
         // Try up to 10 small scrolls to reach the desired age
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 30; i++) {
             String current = helper.getText(BookingSearchModel.childAgePicker).trim();
             // Example of current: "Select", "6 years", "6 years old", etc.
             if (current.contains(ageNumber)) {
