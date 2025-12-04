@@ -56,10 +56,6 @@ public class BookingSearchPage {
         helper.click(BookingSearchModel.cityName);
     }
 
-    // ---------- Dates ----------
-
-    // ---------- Dates – Dynamic Calendar Picker ----------
-
     /**
      * Selects a given date on the Booking.com calendar widget.
      * The method automatically scrolls down until the target date becomes visible.
@@ -82,7 +78,7 @@ public class BookingSearchPage {
             }
 
             // Otherwise scroll down to load the next month
-            helper.scrollDown();
+            helper.scrollUp();
         }
 
         throw new RuntimeException("Target date not found on the calendar: " + date);
@@ -199,17 +195,21 @@ public class BookingSearchPage {
             throw new RuntimeException("Could not parse age from: " + ageText);
         }
 
-        // Try up to 10 small scrolls to reach the desired age
-        for (int i = 0; i < 30; i++) {
+        // Try up to 40 small scrolls to reach the desired age
+        for (int i = 0; i < 40; i++) {
             String current = helper.getText(BookingSearchModel.childAgePicker).trim();
-            // Example of current: "Select", "6 years", "6 years old", etc.
-            if (current.contains(ageNumber)) {
+
+            // extract digits from current picker text as well
+            String currentNumber = current.replaceAll("\\D+", "");  // "16", "6", "7" etc.
+
+            // check exact equality instead of contains
+            if (ageNumber.equals(currentNumber)) {
                 // Desired age is now selected in the center
                 return;
             }
 
             // Age not yet correct -> scroll a bit to move the wheel
-            helper.smallScrollDown();
+            helper.smallScrollUp();
         }
 
         // If we exit the loop, the age was not reached
@@ -217,6 +217,7 @@ public class BookingSearchPage {
         throw new RuntimeException("Could not set child age to: " + ageText +
                 " (last value in picker: " + finalText + ")");
     }
+
 
     public void setFirstChildAge(String ageText) {
         setChildAge(ageText);

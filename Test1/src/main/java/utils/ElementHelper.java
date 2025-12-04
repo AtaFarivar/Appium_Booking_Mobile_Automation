@@ -105,7 +105,7 @@ public class ElementHelper {
 
         int startX = width / 2;
         int startY = height / 2;
-        int endY = (int)(height * 0.65);  // only small movement, perfect for NumberPicker
+        int endY = (int)(height * 0.58);  // only small movement, perfect for NumberPicker
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
         Sequence seq = new Sequence(finger, 1);
@@ -135,23 +135,23 @@ public class ElementHelper {
         }
     }
 
-    public void scrollUpSmall() {
+    // Small Scroll UP for NumberPicker (reverse of smallScrollDown)
+    public void smallScrollUp() {
         int width = driver.manage().window().getSize().getWidth();
         int height = driver.manage().window().getSize().getHeight();
 
         int startX = width / 2;
-        int endX = width / 2;
-        int startY = height / 2 + height / 8;
-        int endY = height / 2 - height / 8;
+        int startY = height / 2;
+        int endY = (int)(height * 0.42); // smaller Y value → scroll UP
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
-        Sequence swipe = new Sequence(finger, 1);
-        swipe.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
-        swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-        swipe.addAction(finger.createPointerMove(Duration.ofMillis(400), PointerInput.Origin.viewport(), endX, endY));
-        swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        Sequence seq = new Sequence(finger, 1);
+        seq.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
+        seq.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq.addAction(finger.createPointerMove(Duration.ofMillis(250), PointerInput.Origin.viewport(), startX, endY));
+        seq.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        ((AppiumDriver) driver).perform(List.of(swipe));
+        ((AppiumDriver) driver).perform(List.of(seq));
     }
 
 
